@@ -15,12 +15,11 @@ public class PcxCoverageLogger {
      * @param branchId The unique identifier for the branch
      */
     public static void logBranch_run(int branchId) {
-        StackTraceElement caller = Thread.currentThread().getStackTrace()[2];
-        StackTraceElement caller2 = Thread.currentThread().getStackTrace()[3];
-        StackTraceElement caller3 = Thread.currentThread().getStackTrace()[4];
-        String position = String.format("%s:%d", caller.getFileName(), caller.getLineNumber());
-        position += String.format(" -> %s:%d", caller2.getFileName(), caller2.getLineNumber());
-        position += String.format(" -> %s:%d", caller3.getFileName(), caller3.getLineNumber());
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+        String position = "";
+        for (StackTraceElement stackTraceElement : stackTraceElements) {
+            position += String.format("%s:%d -> ", stackTraceElement.getFileName(), stackTraceElement.getLineNumber());
+        }
         branchCoverage_run.put(branchId, true);
         branchPositions.put(branchId, position);
     }
